@@ -1,0 +1,637 @@
+[
+    {
+        "id": "11307a2a2fe08886",
+        "type": "tab",
+        "label": "플로우 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "influxdb1",
+        "type": "influxdb",
+        "hostname": "localhost",
+        "port": "8086",
+        "protocol": "http",
+        "database": "",
+        "name": "InfluxDB 2.7 - AMPds2",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": "",
+        "rejectUnauthorized": false
+    },
+    {
+        "id": "dashboard-tab-id",
+        "type": "ui_tab",
+        "name": "Home Data",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "4f5b84bc.e1e2fc",
+        "type": "ui_tab",
+        "name": "Live Data",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "dashboard-group-id",
+        "type": "ui_group",
+        "name": "Kitchen - old",
+        "tab": "dashboard-tab-id",
+        "order": 1,
+        "disp": true,
+        "width": "16",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c68e0b93.9147d8",
+        "type": "ui_group",
+        "name": "Live",
+        "tab": "4f5b84bc.e1e2fc",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "46d060542df02856",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "d03e8a33a211020e",
+        "type": "comment",
+        "z": "11307a2a2fe08886",
+        "name": "",
+        "info": "",
+        "x": 1460,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "e11acc3dbe0f05f9",
+        "type": "comment",
+        "z": "11307a2a2fe08886",
+        "name": "InfluxDB에서 데이터 한번에 받아오기",
+        "info": "",
+        "x": 150,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "f1619e56cd0ec201",
+        "type": "catch",
+        "z": "11307a2a2fe08886",
+        "name": "Catch Errors",
+        "scope": null,
+        "uncaught": false,
+        "x": 1470,
+        "y": 500,
+        "wires": [
+            [
+                "2e3cd6e441b0534c"
+            ]
+        ]
+    },
+    {
+        "id": "2e3cd6e441b0534c",
+        "type": "debug",
+        "z": "11307a2a2fe08886",
+        "name": "Error Debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "msg",
+        "x": 1750,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "55198e114afa0997",
+        "type": "debug",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Show Query Result",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "957cb30ab7ab36f6",
+        "type": "inject",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Get Latest Data",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 240,
+        "wires": [
+            [
+                "162944b7b8492223"
+            ]
+        ]
+    },
+    {
+        "id": "b51c923b38f6eb01",
+        "type": "function",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Extract Latest Value",
+        "func": "if (msg.payload && msg.payload.length > 0) {\n   let latestValue = msg.payload[msg.payload.length - 1];\n   msg.payload = latestValue ? latestValue._value : 0;\n} else {\n   msg.payload = 0;\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 320,
+        "wires": [
+            [
+                "85b38adca407564d"
+            ]
+        ]
+    },
+    {
+        "id": "162944b7b8492223",
+        "type": "influxdb in",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "influxdb": "influxdb1",
+        "name": "Fetch Electricity Data",
+        "query": "from(bucket: \"AMPds2\")\n  |> range(start: 2012-04-08T00:00:00Z, stop: 2014-04-08T00:00:00Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Electricity_B2E.csv_measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"active_power\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 400,
+        "y": 240,
+        "wires": [
+            [
+                "55198e114afa0997",
+                "b51c923b38f6eb01",
+                "8c06861d7ffd5a7b"
+            ]
+        ]
+    },
+    {
+        "id": "85b38adca407564d",
+        "type": "ui_gauge",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Electricity Active Power",
+        "group": "dashboard-group-id",
+        "order": 18,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Active Power",
+        "label": "Watts",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 5000,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": 1000,
+        "seg2": 3000,
+        "diff": false,
+        "className": "",
+        "x": 950,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "8c06861d7ffd5a7b",
+        "type": "function",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "function 2",
+        "func": "let data = msg.payload; // InfluxDB에서 가져온 데이터를 msg.payload로 받음\nlet chartData = [];\n\n// 데이터를 반복하여 차트 형식으로 변환\nfor (let i = 0; i < data.length; i++) {\n    chartData.push({\n        \"x\": new Date(data[i]._time).getTime(), // 타임스탬프를 밀리초로 변환\n        \"y\": data[i]._value // active_power 값을 y축 값으로 설정\n    });\n}\n\n// ui_chart에 맞는 형식으로 msg.payload 설정\nmsg.payload = [{\n    \"series\": [\"Active Power\"], // 차트의 시리즈 이름 설정\n    \"data\": [chartData], // 변환된 데이터 배열\n    \"labels\": [\"\"] // 빈 레이블 (필요 시 수정 가능)\n}];\n\nreturn msg; // 변환된 데이터를 반환하여 ui_chart로 전달\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 400,
+        "wires": [
+            [
+                "5b80b54956c55f12"
+            ]
+        ]
+    },
+    {
+        "id": "5b80b54956c55f12",
+        "type": "ui_chart",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "electricity active power",
+        "group": "dashboard-group-id",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "3000",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0973be",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 940,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ddf5ab133e9b6715",
+        "type": "inject",
+        "z": "11307a2a2fe08886",
+        "name": "Start Query",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 800,
+        "wires": [
+            [
+                "9103003f7b9d8523"
+            ]
+        ]
+    },
+    {
+        "id": "9103003f7b9d8523",
+        "type": "function",
+        "z": "11307a2a2fe08886",
+        "name": "Prepare Flux Query",
+        "func": "msg.query = `from(bucket: \"AMPds2\")\n  |> range(start: 2012-04-09T09:10:00Z, stop: 2014-04-09T09:15:00Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Electricity_B2E.csv_measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"active_power\")`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 800,
+        "wires": [
+            [
+                "386bfa63d22699d3"
+            ]
+        ]
+    },
+    {
+        "id": "0c196ad5a085f293",
+        "type": "function",
+        "z": "11307a2a2fe08886",
+        "name": "Return One Row at a Time",
+        "func": "let data = context.get('data') || [];\nlet currentIndex = context.get('currentIndex') || 0;\n\nif (data.length === 0) {\n    data = msg.payload;\n    context.set('data', data);\n    currentIndex = 0;\n}\n\nif (currentIndex < data.length) {\n    let currentRow = data[currentIndex];\n    msg.payload = currentRow;\n    context.set('currentIndex', currentIndex + 1);\n} else {\n    msg.payload = \"No more data\";\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 780,
+        "wires": [
+            [
+                "3948d94a194a70fc",
+                "d874c2ceb1bc629a"
+            ]
+        ]
+    },
+    {
+        "id": "3948d94a194a70fc",
+        "type": "debug",
+        "z": "11307a2a2fe08886",
+        "name": "Show One Row",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "386bfa63d22699d3",
+        "type": "influxdb in",
+        "z": "11307a2a2fe08886",
+        "influxdb": "influxdb1",
+        "name": "Fetch Electricity Data",
+        "query": "from(bucket: \"AMPds2\")\n  |> range(start: 2012-04-08T09:00:00Z, stop: 2014-04-08T00:00:00Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Electricity_B2E.csv_measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"active_power\")\n",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 600,
+        "y": 760,
+        "wires": [
+            [
+                "0c196ad5a085f293"
+            ]
+        ]
+    },
+    {
+        "id": "d874c2ceb1bc629a",
+        "type": "ui_chart",
+        "z": "11307a2a2fe08886",
+        "name": "Active Power Chart",
+        "group": "dashboard-group-id",
+        "order": 1,
+        "width": 16,
+        "height": 8,
+        "label": "Active Power Over Time",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "No data",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "5000",
+        "removeOlder": "3000",
+        "removeOlderPoints": "2000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1330,
+        "y": 920,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3b9ac6fb869f8bf0",
+        "type": "inject",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Start Query",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "payloadType": "date",
+        "x": 120,
+        "y": 1160,
+        "wires": [
+            [
+                "dbcbc46532ced221"
+            ]
+        ]
+    },
+    {
+        "id": "dbcbc46532ced221",
+        "type": "function",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Prepare Flux Query",
+        "func": "msg.query = `from(bucket: \\\"AMPds2\\\")\n  |> range(start: 2012-04-09T09:10:00Z, stop: 2012-04-09T09:15:00Z)\n  |> filter(fn: (r) => r[\\\"_measurement\\\"] == \\\"Electricity_B2E.csv_measurements\\\")\n  |> filter(fn: (r) => r[\\\"_field\\\"] == \\\"active_power\\\")`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 1160,
+        "wires": [
+            [
+                "79f7b8bc5171d8a6"
+            ]
+        ]
+    },
+    {
+        "id": "a5dbcf1f7a23329f",
+        "type": "debug",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "name": "Show Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 870,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "79f7b8bc5171d8a6",
+        "type": "influxdb in",
+        "z": "11307a2a2fe08886",
+        "d": true,
+        "influxdb": "influxdb1",
+        "name": "Fetch Electricity Data",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 600,
+        "y": 1160,
+        "wires": [
+            [
+                "a5dbcf1f7a23329f"
+            ]
+        ]
+    },
+    {
+        "id": "cdee2d8897688f81",
+        "type": "comment",
+        "z": "11307a2a2fe08886",
+        "name": "데이터 일치 여부 확인용",
+        "info": "## 2012:04:09:09:10 ~ 2012:04:09:09:15 ",
+        "x": 170,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "a17919a197013e2a",
+        "type": "comment",
+        "z": "11307a2a2fe08886",
+        "name": "data streaming ",
+        "info": "# 일정 간격으로 전체데이터에서 뽑아오기\n=> 실시간 데이터 처럼 사용 가능\n\n",
+        "x": 120,
+        "y": 640,
+        "wires": []
+    }
+]
