@@ -3,6 +3,18 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import numpy as np
 import pandas as pd
 
+"""
+| active_values | 
+<class 'numpy.ndarray'>
+
+| data |  
+#   Column        Non-Null Count  Dtype             
+---  ------        --------------  -----             
+ 0   active_power  731 non-null    float32           
+ 1   Date          731 non-null    datetime64[s, UTC]
+ 
+"""
+
 bucket = "demo"
 org = "halee"
 token = "uvxB6umk1_oPBve07f12HA4dqUlvaOOSK1-y1LbE5ZluB-D2LnvdYg-nIlcWxOqilohFJxlSE-0eVpb_ZjSsOg=="
