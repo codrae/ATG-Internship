@@ -34,3 +34,22 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+# dependency
+# `echarts` is the peerDependence of `echarts-for-react`, you can install echarts with your own version.
+npm install --save echarts-for-react
+npm install --save echarts
+
+npm install react-modal
+npm install file-saver
+npm install echarts
+
+npm install @types/react-modal --save-dev
+npm install @types/file-saver --save-dev
+npm install @types/echarts --save-dev
+npm install @faker-js/faker
+
+# 삭제 예정
+npm install @faker-js/faker
+npm install @types/faker --save-dev
