@@ -34,6 +34,7 @@ const Chart: React.FC<ChartProps> = ({
                                          setChartInstance,
                                          onChartClick,
                                      }) => {
+
     const option = useMemo(() => {
         const yMinValue = yMin !== '' ? parseFloat(yMin) : Number.NEGATIVE_INFINITY;
         const yMaxValue = yMax !== '' ? parseFloat(yMax) : Number.POSITIVE_INFINITY;
@@ -76,7 +77,6 @@ const Chart: React.FC<ChartProps> = ({
 
                             if (baseIndex !== null) {
                                 if (pointIndex === baseIndex) {
-                                    lineColor = 'white';
                                     opacity = 1;
                                 } else {
                                     const distance = Math.abs(pointIndex - baseIndex);
@@ -99,7 +99,6 @@ const Chart: React.FC<ChartProps> = ({
                         }),
                 },
             },
-            // 이동평균선 시리즈
             {
                 data: movingAverageData,
                 type: 'line',
@@ -115,7 +114,6 @@ const Chart: React.FC<ChartProps> = ({
             },
         ];
 
-        // 기존 dataZoom 상태 유지
         let currentDataZoom: echarts.EChartOption.DataZoom[] = [];
         if (chartInstance?.getOption()) {
             const instanceOption = chartInstance.getOption();
@@ -127,6 +125,7 @@ const Chart: React.FC<ChartProps> = ({
         return {
             title: {
                 text: 'Vibration Chart Example',
+
             },
             grid: {
                 containLabel: true,
@@ -138,12 +137,14 @@ const Chart: React.FC<ChartProps> = ({
                 nameLocation: 'middle',
                 nameGap: 30,
                 boundaryGap: false,
+
             },
             yAxis: {
                 type: 'value',
                 min: yMin !== '' ? parseFloat(yMin) : 'dataMin',
                 max: yMax !== '' ? parseFloat(yMax) : 'dataMax',
                 boundaryGap: false,
+
             },
             tooltip: {
                 trigger: 'axis',
@@ -181,6 +182,7 @@ const Chart: React.FC<ChartProps> = ({
                             start: 0,
                             end: 100,
                             orient: 'horizontal',
+                            filterMode: 'none',
                         },
                         {
                             type: 'slider',
@@ -189,6 +191,7 @@ const Chart: React.FC<ChartProps> = ({
                             right: 10,
                             start: 0,
                             end: 100,
+                            filterMode: 'none',
                         },
                         {
                             type: 'inside',
@@ -224,8 +227,8 @@ const Chart: React.FC<ChartProps> = ({
             onEvents={onEvents}
             style={{ height: '500px' }}
             lazyUpdate={true}
-            theme={'dark'}
             notMerge={false}
+            theme={'dark'}
         />
     );
 };
