@@ -10,6 +10,7 @@ export function useCalculations(
     const [markedPoints, setMarkedPoints] = useState<number[]>([]);
     const [tableData, setTableData] = useState<Point[]>([]);
     const [markerPairCount, setMarkerPairCount] = useState<number>(5);
+    const [harmonicLineCount, setHarmonicLineCount] = useState<number>(5);
 
     // 두 점 사이의 거리 계산
     const calculateDistance = useCallback((point1: Point, point2: Point) => {
@@ -74,20 +75,19 @@ export function useCalculations(
         [vibrationValues, xMin, xMax, markerPairCount]
     );
 
-    // 하모닉 마커 계산
     const calculateHarmonics = useCallback(
         (point: Point) => {
             const baseX = point.x;
-            if (baseX <= 0) {
-                alert('x값은 1 이상이어야 합니다.');
+            if (baseX < 0) {
+                alert('x값은 0 이상이어야 합니다.');
                 return;
             }
             const harmonicPoints: number[] = [];
 
-            for (let i = baseX; i <= vibrationValues.length; i += baseX) {
-                if ((xMax !== undefined && i > xMax) || (i - baseX) / baseX > 10) break;
-                if (i >= xMin!) {
-                    harmonicPoints.push(i - 1);
+            for (let i = 1; i <= harmonicLineCount + 1; i++) {
+                const harmonicX = baseX * i;
+                if (harmonicX - 1 < vibrationValues.length) {
+                    harmonicPoints.push(harmonicX - 1);
                 }
             }
 
@@ -101,8 +101,9 @@ export function useCalculations(
                     .sort((a, b) => a.x - b.x)
             );
         },
-        [vibrationValues, xMin, xMax]
+        [vibrationValues, harmonicLineCount]
     );
+
 
     return {
         distance,
@@ -113,6 +114,8 @@ export function useCalculations(
         setTableData,
         markerPairCount,
         setMarkerPairCount,
+        setHarmonicLineCount,
+        harmonicLineCount,
         calculateDistance,
         calculateMarkers,
         calculateHarmonics,

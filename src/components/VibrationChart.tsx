@@ -42,12 +42,14 @@ const VibrationChart: React.FC = () => {
         setTableData,
         markerPairCount,
         setMarkerPairCount,
+        harmonicLineCount,
+        setHarmonicLineCount,
         calculateDistance,
         calculateMarkers,
         calculateHarmonics,
     } = useCalculations(vibrationValues, xMin, xMax);
 
-    const [mode, setMode] = useState<Mode>(null);
+    const [mode, setMode] = useState<Mode>("distance");
     const [selectedPoints, setSelectedPoints] = useState<Point[]>([]);
     const [currentPoint, setCurrentPoint] = useState<Point | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -129,14 +131,21 @@ const VibrationChart: React.FC = () => {
     // 포인트 x값 변경 처리
     const handlePointXChange = useCallback(
         (index: number, newXValue: number) => {
-            if (
-                isNaN(newXValue) ||
-                newXValue < 1 ||
-                newXValue > vibrationValues.length
-            ) {
+            if (isNaN(newXValue)) {
+                // 입력 필드가 비어있을 때
+                setSelectedPoints((prevPoints) => {
+                    const newPoints = [...prevPoints];
+                    newPoints[index] = { x: NaN, y: NaN };
+                    return newPoints;
+                });
+                return;
+            }
+
+            if (newXValue < 1 || newXValue > vibrationValues.length) {
                 alert('x값이 데이터 범위를 벗어났습니다.');
                 return;
             }
+
             const newYValue = vibrationValues[newXValue - 1];
             setSelectedPoints((prevPoints) => {
                 const newPoints = [...prevPoints];
@@ -226,6 +235,8 @@ const VibrationChart: React.FC = () => {
                 markerPairCount={markerPairCount}
                 setMarkerPairCount={setMarkerPairCount}
                 handleConfirmAction={handleConfirmAction}
+                harmonicLineCount={harmonicLineCount}
+                setHarmonicLineCount={setHarmonicLineCount}
             />
 
             <MarkerDataTable
