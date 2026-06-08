@@ -1,0 +1,972 @@
+[
+    {
+        "id": "39aa2ca9.804da4",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "262a3923.e7b216",
+        "type": "influxdb in",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "all",
+        "query": "from(bucket: \"FirstBucket\")\n  |> range(start: 2022-01-01T17:00:00Z, stop: 2022-01-02T05:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"home\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 430,
+        "y": 100,
+        "wires": [
+            [
+                "39aa2ca9.804da4",
+                "7bfb36bc0fab0aed"
+            ]
+        ]
+    },
+    {
+        "id": "803d82f.ff80f8",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get old data",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 140,
+        "wires": [
+            [
+                "262a3923.e7b216",
+                "fe7c41d669d8f463",
+                "0e84dd549d0bb322",
+                "0c6a36be281784df"
+            ]
+        ]
+    },
+    {
+        "id": "d03e8a33a211020e",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "info": "",
+        "x": 1680,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e11acc3dbe0f05f9",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "InfluxDB에서 데이터 받아오기",
+        "info": "",
+        "x": 160,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "ef4e5ab9b4613bbd",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "InfluxDB에 데이터 넣기 ",
+        "info": "매 10초마다 \nJson을 통해 데이터를 넣어줌.\nline protocol 형식으로 자동 변환.\n# # measurement는 influxDB output 노드에서 설정",
+        "x": 100,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "f1619e56cd0ec201",
+        "type": "catch",
+        "z": "f6f2187d.f17ca8",
+        "name": "Catch Errors",
+        "scope": null,
+        "uncaught": false,
+        "x": 1210,
+        "y": 620,
+        "wires": [
+            [
+                "2e3cd6e441b0534c"
+            ]
+        ]
+    },
+    {
+        "id": "2e3cd6e441b0534c",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Error Debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "msg",
+        "x": 1490,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "0b350df7d402ebd0",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Format Data for Chart",
+        "func": "let data = [];\nmsg.payload.forEach(item => {\n    data.push({\n        x: new Date(item._time),  // X축: 시간\n        y: item._value  // Y축: 값\n    });\n});\nmsg.payload = [{\n    series: [\"CO Levels\"],\n    data: [data],\n    labels: [\"Time\"]\n}];\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 200,
+        "wires": [
+            [
+                "e061f9eeaf27cfee"
+            ]
+        ]
+    },
+    {
+        "id": "e061f9eeaf27cfee",
+        "type": "ui_chart",
+        "z": "f6f2187d.f17ca8",
+        "name": "Kitchen-co",
+        "group": "dashboard-group-id",
+        "order": 11,
+        "width": 16,
+        "height": 7,
+        "label": "Kitchen-co",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "No Data",
+        "dot": false,
+        "ymin": "10",
+        "ymax": "30",
+        "removeOlder": "1",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#258fda",
+            "#aec7e8",
+            "#ff7f0e",
+            "#ffbb78",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1050,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7bfb36bc0fab0aed",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Extract Latest CO Value",
+        "func": "let latestValue = msg.payload[msg.payload.length - 1]; // 최신 데이터 포인트\nmsg.payload = latestValue ? latestValue._value : 0;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 100,
+        "wires": [
+            [
+                "0a845401beacb597"
+            ]
+        ]
+    },
+    {
+        "id": "0a845401beacb597",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "CO Levels Gauge",
+        "group": "dashboard-group-id",
+        "order": 18,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "CO Levels",
+        "label": "PPM",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1070,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "23e54e47aa646668",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Inject Every 10 Seconds",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 700,
+        "wires": [
+            [
+                "513a6366e3ea8791"
+            ]
+        ]
+    },
+    {
+        "id": "513a6366e3ea8791",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Generate Random Data",
+        "func": "// 타임스탬프를 현재 시간으로 변환 (밀리초 -> 나노초)\nlet timestamp = Date.now() * 1000000;  // 밀리초 -> 나노초 변환\n\n// 랜덤한 값 생성 함수\nfunction getRandomValue(min, max) {\n    return Math.random() * (max - min) + min;\n}\n\n// 각각의 ROOM에 대해 랜덤 값을 생성\nmsg.payload ={\n    room: \"Kitchen\",\n    temp: parseFloat(getRandomValue(15.0, 30.0).toFixed(1)), // TEMP 범위: 15.0 ~ 30.0\n    hum: parseFloat(getRandomValue(20.0, 60.0).toFixed(1)),  // HUM 범위: 20.0 ~ 60.0\n    co: Math.floor(getRandomValue(0, 50)),                   // CO 범위: 0 ~ 50\n    timestamp: timestamp\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 700,
+        "wires": [
+            [
+                "9d9a83949672fae4",
+                "ac69c5a17631382c"
+            ]
+        ]
+    },
+    {
+        "id": "9d9a83949672fae4",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "Write to InfluxDB",
+        "measurement": "home",
+        "precision": "ms",
+        "retentionPolicy": "",
+        "database": "",
+        "precisionV18FluxV20": "s",
+        "retentionPolicyV18Flux": "",
+        "org": "atg_intern",
+        "bucket": "FirstBucket",
+        "x": 670,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "ac69c5a17631382c",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Debug Payload",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "7e2db5d8a579d6e7",
+        "type": "influxdb-line-protocol",
+        "z": "f6f2187d.f17ca8",
+        "d": true,
+        "name": "",
+        "addTimestamp": false,
+        "defaultTypeMapping": "float",
+        "typeMappings": [],
+        "x": 1020,
+        "y": 820,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6bbc8acebecb42c2",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Inject Every 10 Seconds",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 920,
+        "wires": [
+            [
+                "ef71595219c6f36c"
+            ]
+        ]
+    },
+    {
+        "id": "ef71595219c6f36c",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Generate Random Data",
+        "func": "// 타임스탬프를 현재 시간으로 변환 (밀리초 -> 나노초)\nlet timestamp = Date.now() * 1000000;  // 밀리초 -> 나노초 변환\n\n// 랜덤한 값 생성 함수\nfunction getRandomValue(min, max) {\n    return Math.random() * (max - min) + min;\n}\n\n// 각각의 ROOM에 대해 랜덤 값을 생성\nmsg.payload ={\n    room: \"Living Room\",\n    temp: parseFloat(getRandomValue(15.0, 30.0).toFixed(1)), // TEMP 범위: 15.0 ~ 30.0\n    hum: parseFloat(getRandomValue(20.0, 60.0).toFixed(1)),  // HUM 범위: 20.0 ~ 60.0\n    co: Math.floor(getRandomValue(0, 50)),                   // CO 범위: 0 ~ 50\n    timestamp: timestamp\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 920,
+        "wires": [
+            [
+                "908e4763f6baa471",
+                "02550f5474eba568"
+            ]
+        ]
+    },
+    {
+        "id": "908e4763f6baa471",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "Write to InfluxDB",
+        "measurement": "home",
+        "precision": "ms",
+        "retentionPolicy": "",
+        "database": "",
+        "precisionV18FluxV20": "s",
+        "retentionPolicyV18Flux": "",
+        "org": "atg_intern",
+        "bucket": "FirstBucket",
+        "x": 650,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "02550f5474eba568",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Debug Payload",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "f15f70020fc7612e",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "0e802070ba1bd938",
+        "type": "influxdb in",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "last 1 min co",
+        "query": "from(bucket: \"FirstBucket\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"home\" and r._field == \"co\")\n",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 450,
+        "y": 460,
+        "wires": [
+            [
+                "f15f70020fc7612e",
+                "90913c9a35ae563f",
+                "335db69c7f391b5a"
+            ]
+        ]
+    },
+    {
+        "id": "f6b93f9d7c028a03",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 460,
+        "wires": [
+            [
+                "0e802070ba1bd938"
+            ]
+        ]
+    },
+    {
+        "id": "90913c9a35ae563f",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Format Data for Chart",
+        "func": "let data = [];\nmsg.payload.forEach(item => {\n    data.push({\n        x: new Date(item._time),  // X축: 시간\n        y: item._value  // Y축: 값\n    });\n});\nmsg.payload = [{\n    series: [\"CO Levels\"],\n    data: [data],\n    labels: [\"Time\"]\n}];\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 520,
+        "wires": [
+            [
+                "67546442fbfbbcb0"
+            ]
+        ]
+    },
+    {
+        "id": "67546442fbfbbcb0",
+        "type": "ui_chart",
+        "z": "f6f2187d.f17ca8",
+        "name": "CO Levels Chart",
+        "group": "c68e0b93.9147d8",
+        "order": 1,
+        "width": 12,
+        "height": 11,
+        "label": "CO Levels Over Time",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "mm:ss",
+        "interpolate": "linear",
+        "nodata": "No Data",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": "1",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#2298ec",
+            "#aec7e8",
+            "#e57e24",
+            "#ffbb78",
+            "#2ca02c",
+            "#98df8a",
+            "#c03030",
+            "#ff9896",
+            "#9467bd"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1040,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "335db69c7f391b5a",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Extract Latest CO Value",
+        "func": "let values = msg.payload.map(item => item._value);  // 각 객체에서 _value 값을 추출\n\n// 배열이 비어 있지 않다면 마지막 값을 반환, 그렇지 않으면 0 반환\nmsg.payload = values.length > 0 ? values[values.length - 1] : 0;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 460,
+        "wires": [
+            [
+                "296265c68ffe784f",
+                "a738b9fa6158ca66"
+            ]
+        ]
+    },
+    {
+        "id": "296265c68ffe784f",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "CO Levels Gauge",
+        "group": "c68e0b93.9147d8",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "CO Levels",
+        "label": "PPM",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1050,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "fe7c41d669d8f463",
+        "type": "influxdb in",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "filtering Kitchen - co",
+        "query": "from(bucket: \"FirstBucket\")\n  |> range(start: 2022-01-01T17:00:00Z, stop: 2022-01-02T05:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"home\" and r.room == \"Kitchen\" and r._field == \"co\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 470,
+        "y": 200,
+        "wires": [
+            [
+                "0b350df7d402ebd0"
+            ]
+        ]
+    },
+    {
+        "id": "f1cd5ce0dc306a5d",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Format Data for Chart",
+        "func": "let data = [];\nmsg.payload.forEach(item => {\n    data.push({\n        x: new Date(item._time),  // X축: 시간\n        y: item._value  // Y축: 값\n    });\n});\nmsg.payload = [{\n    series: [\"CO Levels\"],\n    data: [data],\n    labels: [\"Time\"]\n}];\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 260,
+        "wires": [
+            [
+                "039ccb591ddcbd7c"
+            ]
+        ]
+    },
+    {
+        "id": "039ccb591ddcbd7c",
+        "type": "ui_chart",
+        "z": "f6f2187d.f17ca8",
+        "name": "Kitchen-hum",
+        "group": "dashboard-group-id",
+        "order": 3,
+        "width": 7,
+        "height": 7,
+        "label": "Kitchen-hum",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "No Data",
+        "dot": false,
+        "ymin": "35",
+        "ymax": "40",
+        "removeOlder": "12",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#258fda",
+            "#aec7e8",
+            "#ff7f0e",
+            "#ffbb78",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1050,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0e84dd549d0bb322",
+        "type": "influxdb in",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "filtering kitchen - hum",
+        "query": "from(bucket: \"FirstBucket\")\n  |> range(start: 2022-01-01T17:00:00Z, stop: 2022-01-02T05:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"home\" and r.room == \"Kitchen\" and r._field == \"hum\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 480,
+        "y": 260,
+        "wires": [
+            [
+                "f1cd5ce0dc306a5d"
+            ]
+        ]
+    },
+    {
+        "id": "1e64d298fb57c4c2",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Format Data for Chart",
+        "func": "let data = [];\nmsg.payload.forEach(item => {\n    data.push({\n        x: new Date(item._time),  // X축: 시간\n        y: item._value  // Y축: 값\n    });\n});\nmsg.payload = [{\n    series: [\"TEMP Levels\"],\n    data: [data],\n    labels: [\"Time\"]\n}];\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 320,
+        "wires": [
+            [
+                "f545241a6b290b7a"
+            ]
+        ]
+    },
+    {
+        "id": "f545241a6b290b7a",
+        "type": "ui_chart",
+        "z": "f6f2187d.f17ca8",
+        "name": "Kitchen-temp",
+        "group": "dashboard-group-id",
+        "order": 1,
+        "width": 8,
+        "height": 7,
+        "label": "Kitchen-temp",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "No Data",
+        "dot": false,
+        "ymin": "22",
+        "ymax": "25",
+        "removeOlder": "12",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#258fda",
+            "#aec7e8",
+            "#ff7f0e",
+            "#ffbb78",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1050,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0c6a36be281784df",
+        "type": "influxdb in",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "influxdb1",
+        "name": "filtering kitchen - temp",
+        "query": "from(bucket: \"FirstBucket\")\n  |> range(start: 2022-01-01T17:00:00Z, stop: 2022-01-02T05:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"home\" and r.room == \"Kitchen\" and r._field == \"temp\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "atg_intern",
+        "x": 480,
+        "y": 320,
+        "wires": [
+            [
+                "1e64d298fb57c4c2"
+            ]
+        ]
+    },
+    {
+        "id": "a738b9fa6158ca66",
+        "type": "switch",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "30",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1070,
+        "y": 380,
+        "wires": [
+            [
+                "1fb2942e2d0a6ec8"
+            ]
+        ]
+    },
+    {
+        "id": "a853ce4584c53879",
+        "type": "e-mail",
+        "z": "f6f2187d.f17ca8",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": false,
+        "tls": true,
+        "name": "hi653@naver.com",
+        "dname": "",
+        "x": 1390,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "1fb2942e2d0a6ec8",
+        "type": "link out",
+        "z": "f6f2187d.f17ca8",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "0718b424c3920f30"
+        ],
+        "x": 1255,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "865542f4a8b32fd4",
+        "type": "ui_toast",
+        "z": "f6f2187d.f17ca8",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "Danger!!!",
+        "name": "alarm",
+        "x": 1510,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "21f2b38921387897",
+        "type": "ui_audio",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "c68e0b93.9147d8",
+        "voice": "Google US English",
+        "always": true,
+        "x": 1520,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "0718b424c3920f30",
+        "type": "link in",
+        "z": "f6f2187d.f17ca8",
+        "name": "link in 1",
+        "links": [
+            "1fb2942e2d0a6ec8"
+        ],
+        "x": 1035,
+        "y": 1280,
+        "wires": [
+            [
+                "865542f4a8b32fd4",
+                "a853ce4584c53879",
+                "5112da3c3e15d340"
+            ]
+        ]
+    },
+    {
+        "id": "5112da3c3e15d340",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "function 1",
+        "func": "let numberValue = msg.payload;\n\nmsg.payload = \"Danger! CO value is over 30. the value is \" + numberValue;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 1320,
+        "wires": [
+            [
+                "21f2b38921387897"
+            ]
+        ]
+    },
+    {
+        "id": "dff683b726d56ec1",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "Danger!",
+        "info": "",
+        "x": 1070,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "influxdb1",
+        "type": "influxdb",
+        "hostname": "localhost",
+        "port": "8086",
+        "protocol": "http",
+        "database": "",
+        "name": "InfluxDB 2.7 - FirstBucket",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": "",
+        "rejectUnauthorized": false
+    },
+    {
+        "id": "dashboard-group-id",
+        "type": "ui_group",
+        "name": "Kitchen - old",
+        "tab": "dashboard-tab-id",
+        "order": 1,
+        "disp": true,
+        "width": "16",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c68e0b93.9147d8",
+        "type": "ui_group",
+        "name": "Live",
+        "tab": "4f5b84bc.e1e2fc",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dashboard-tab-id",
+        "type": "ui_tab",
+        "name": "Home Data",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "4f5b84bc.e1e2fc",
+        "type": "ui_tab",
+        "name": "Live Data",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

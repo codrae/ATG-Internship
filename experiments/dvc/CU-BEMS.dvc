@@ -1,0 +1,6 @@
+outs:
+- md5: c03cec1f3c8e19cb512bee00d28c5423.dir
+  size: 733105226
+  nfiles: 15
+  hash: md5
+  path: CU-BEMS

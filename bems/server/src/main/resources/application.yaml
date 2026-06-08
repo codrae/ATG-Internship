@@ -1,0 +1,52 @@
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    mssql-datasource:
+      username: ${MSSQL_USERNAME}
+      password: ${MSSQL_PASSWORD}
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      jdbc-url: ${MSSQL_URL}
+    postgresql-datasource:
+      username: ${POSTGRES_USERNAME}
+      password: ${POSTGRES_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: ${POSTGRES_URL}
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+    defer-datasource-initialization: true
+  task:
+    scheduling:
+      thread-name-prefix: periodic-task-
+  data:
+    redis:
+      host: ${REDIS_URL}
+      port: ${REDIS_PORT}
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  ai:
+    anthropic:
+      api-key: ${API_KEY}
+
+      chat:
+        options:
+          model: claude-3-5-sonnet-20241022
+          temperature: 0.1
+
+
+
+influx:
+  token: ${INFLUXDB_TOKEN}
+  url: ${INFLUXDB_URL}
+  database: ${INFLUXDB_DATABASE}
+  organization: ${INFLUXDB_ORGANIZATION}

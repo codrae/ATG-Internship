@@ -1,0 +1,11 @@
+APScheduler==3.10.4
+fastapi==0.115.6
+httpx==0.28.1
+influxdb_client==1.47.0
+numpy==2.2.0
+pandas==2.2.3
+Requests==2.32.3
+scikit_learn==1.6.0
+torch==2.3.1+cpu
+-f https://download.pytorch.org/whl/cpu/torch_stable.html
+uvicorn==0.34.0

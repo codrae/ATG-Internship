@@ -1,0 +1,6 @@
+[build]
+command = "npm run build" # 빌드 명령어
+publish = "out"           # 정적 파일이 생성되는 디렉토리
+
+[[plugins]]
+package = "@netlify/plugin-nextjs" # Next.js 플러그인 추가

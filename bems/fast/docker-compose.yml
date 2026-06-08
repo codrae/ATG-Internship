@@ -1,0 +1,33 @@
+services:
+  bems-fast:
+    container_name: bems-fast
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app:cached  # I/O 성능 최적화 (Linux Docker 호스트에서 효과적)
+    environment:
+      INFLUXDB_URL: ${INFLUXDB_URL}
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
+      SPRING_URL: ${SPRING_URL}
+      SPRING_HOST: ${SPRING_HOST}
+      SPRING_PORT: ${SPRING_PORT}
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
+      LSTM_INPUT_SIZE: ${LSTM_INPUT_SIZE}
+      LSTM_HIDDEN_SIZE: ${LSTM_HIDDEN_SIZE}
+      LSTM_NUM_LAYERS: ${LSTM_NUM_LAYERS}
+      LSTM_OUTPUT_SIZE: ${LSTM_OUTPUT_SIZE}
+      LSTM_DROPOUT: ${LSTM_DROPOUT}
+      ENVIRONMENT: production  # 환경 설정 명시
+    networks:
+      - bems-network  # 외부 네트워크 이름을 바로 사용
+    restart: unless-stopped
+
+networks:
+  bems-network:
+    external: true

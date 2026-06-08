@@ -1,17 +1,35 @@
-# ATG-BEMS
+# ATG-Internship
 
-ATG 인턴십 기간 동안 진행한 **BEMS(Building Energy Management System)** 관련 산출물을 하나의 저장소로 통합한 모노레포입니다.
-
-`study/`에는 BEMS 기초 개발 산출물(데이터 로드·전처리·분석, LSTM/GRU 등 시계열 예측 모델 연습)이 위치하며, 인턴 기간 중 별도 저장소로 진행했던 작업들을 아래 하위 디렉토리로 흡수했습니다.
+ATG 인턴십 기간 동안 진행한 산출물을 한 저장소로 정리한 모노레포입니다.
+실제 고객사 대상 프로젝트(**BEMS**, **FEMS**)와 그 과정에서의 학습·실험 자료로 구성됩니다.
 
 ## 구성
 
-| 디렉토리 | 역할 | 원본 저장소 |
-| --- | --- | --- |
-| `study/` | BEMS 기초 개발 — 데이터 로드·전처리·분석, LSTM/GRU 시계열 예측 모델 연습 (AMPds2, CU-BEMS 데이터셋 실험) | (루트 기존 산출물) |
-| `node-red/` | Node-RED 기반 데이터 수집 플로우 및 InfluxDB 스트리밍 연동 | `codrae/Node-Red` |
-| `dvc/` | DVC로 관리하는 데이터셋/모델 버전 관리 (CU-BEMS 데이터, 학습 모델 아티팩트) | `codrae/atg_dvc` |
-| `timeseries-models/` | 시계열 딥러닝 모델(LSTM 등) 학습/평가 스크립트 및 노트북 | `codrae/timeseries-dl-models` |
-| `cursor-lib/` | Next.js 기반 프론트엔드/도구 라이브러리 | `codrae/CURSOR` |
+### `bems/` — BEMS (Building Energy Management System)
+건물 에너지 관리 시스템. 데이터 수집 → 저장 → 예측 → 시각화 파이프라인.
 
-`study/`는 본 저장소에서 처음부터 진행한 BEMS 기초 개발 산출물이며, 그 외 하위 디렉토리(`node-red/`, `dvc/`, `timeseries-models/`, `cursor-lib/`)는 각 원본 저장소의 커밋 히스토리를 `git subtree`로 보존한 채 통합되었습니다.
+| 디렉토리 | 스택 | 역할 |
+| --- | --- | --- |
+| `bems/fast/` | Python · FastAPI · APScheduler | 데이터 수집·전처리 및 LSTM 기반 전력 예측 서비스 |
+| `bems/server/` | Java · Spring · Gradle | 백엔드 API 서버 (InfluxDB · PostgreSQL · Redis · 외부 MSSQL EMS DB 연동) |
+| `bems/view/` | Next.js · Ant Design | 대시보드 프론트엔드 |
+
+### `fems/` — FEMS (Factory Energy Management System)
+SIMMTECH 고객사 대상 공장 에너지 관리 시스템 프론트엔드 (Next.js).
+
+### `experiments/` — 학습·실험
+인턴십 과정에서의 테스트·공부·실험 자료.
+
+| 디렉토리 | 내용 |
+| --- | --- |
+| `experiments/study/` | BEMS 기초 개발 — 데이터 전처리·분석, LSTM/GRU 예측 모델 연습 |
+| `experiments/node-red/` | Node-RED 데이터 수집 플로우 + InfluxDB 스트리밍 |
+| `experiments/dvc/` | DVC 기반 데이터셋/모델 버전 관리 |
+| `experiments/timeseries-models/` | 시계열 딥러닝 모델 학습/평가 |
+| `experiments/cursor-lib/` | Next.js 기반 프론트엔드/도구 라이브러리 |
+
+## 보안
+
+모든 비밀값(DB 비밀번호, InfluxDB 토큰, API 키, 외부 서버 주소 등)은 코드에서 분리되어
+환경변수(`.env`)로 주입됩니다. 각 서비스의 `.env.example`을 참고해 로컬 환경을 구성하세요.
+실제 `.env` 파일은 저장소에 포함되지 않습니다.

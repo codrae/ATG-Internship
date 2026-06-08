@@ -1,0 +1,18 @@
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+
+# 그래들 파일들을 먼저 복사하고 의존성을 다운로드
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
+RUN chmod +x gradlew
+RUN mkdir -p /root/.gradle && chmod -R 777 /root/.gradle
+RUN chmod -R 777 /app
+RUN ./gradlew dependencies
+
+# 소스 코드는 볼륨 마운트로 제공될 것이므로 COPY하지 않음
+EXPOSE 8080
+
+# devtools를 활성화하기 위한 JVM 옵션 추가
+ENTRYPOINT ["./gradlew", "bootRun", "--args='--spring.devtools.restart.enabled=true'"]

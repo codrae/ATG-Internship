@@ -1,0 +1,9 @@
+<svg width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon">
+<path id="Rectangle 5042" d="M0 0H3V28H1C0.447715 28 0 27.5523 0 27V0Z" fill="#374151"/>
+<path id="Vector 577" d="M1 10H5L7.5 17L11 2L15 11L19 6H26" stroke="#374151" stroke-width="2.4" stroke-linejoin="round"/>
+<path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M13 28C12.1763 27.1934 11.4703 26.174 10.9242 25H0V27C0 27.5523 0.447715 28 1 28H13Z" fill="#374151"/>
+<circle id="Ellipse 413" cx="19.5" cy="20.5" r="7.3" stroke="#374151" stroke-width="2.4"/>
+<path id="Vector 566" d="M16.5 19.5L19 22L23 18" stroke="#374151" stroke-width="2.4"/>
+</g>
+</svg>

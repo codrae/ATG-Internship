@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> WebSocket 테스트 </title>
+</head>
+<body>
+<h2> WebSocket Client </h2>
+<button onclick="connect()">Connect</button>
+<button onclick="disconnect()">Disconnect</button>
+<div id="messages"></div>
+
+<!-- 의존성 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+<script>
+    var stompClient = null;
+
+    // Connect
+    function connect() {
+        var socket = new SockJS('http://localhost:8080/ws-socket'); // 엔드포인트
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // Subscribe to the destination where the server sends messages
+            stompClient.subscribe('/bems/building-1', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-2-south-4', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-2-north', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-5-south', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-5-east', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-5-north', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/anniversary-memorial-hall', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/inha-dream-center', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-7', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/building-9', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/law-school-building', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/west-hall', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/inha-dream-center-2-3', function (message) {
+                showMessage(message.body);
+            });
+            stompClient.subscribe('/bems/high-tech-center', function (message) {
+                showMessage(message.body);
+            });
+        });
+    }
+
+    // Disconnect
+    function disconnect() {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
+
+    // 메시지 화면에 출력
+    function showMessage(message) {
+        var messagesDiv = document.getElementById('messages');
+        var messageElement = document.createElement('p');
+        messageElement.appendChild(document.createTextNode(message));
+        messagesDiv.appendChild(messageElement);
+    }
+</script>
+</body>
+</html>
